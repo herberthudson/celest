@@ -77,47 +77,21 @@ fn connect_to_logs(app_handle: &tauri::AppHandle) {
 
     for result in rx {
         match result {
-            Ok(events) => events.iter().for_each(|event| {
-                match event {
-                    DebouncedEvent { event, time } => match event {
-                        DataChange => {
-                            let log_path = event.paths[0].to_str().unwrap();
-                            if valid_ed_logs_files(log_path, ED_FILES)
-                                || valid_ed_logs_files(log_path, JOURNAL_LOG)
-                            {
-                                let content = read_journal_log(log_path);
-                                let last_value = content.get(0).unwrap().clone();
-                                let ed_log_event: EliteDangerousLogEvent =
-                                    serde_json::from_str(&last_value).unwrap();
-                                process_log_event(ed_log_event, &last_value, app_handle);
-                            }
+            Ok(events) => events.iter().for_each(|event| match event {
+                DebouncedEvent { event, time } => match event {
+                    DataChange => {
+                        let log_path = event.paths[0].to_str().unwrap();
+                        if valid_ed_logs_files(log_path, ED_FILES)
+                            || valid_ed_logs_files(log_path, JOURNAL_LOG)
+                        {
+                            let content = read_journal_log(log_path);
+                            let last_value = content.get(0).unwrap().clone();
+                            let ed_log_event: EliteDangerousLogEvent =
+                                serde_json::from_str(&last_value).unwrap();
+                            process_log_event(ed_log_event, &last_value, app_handle);
                         }
-                    },
-                }
-                // println!("{:?}", event);
-                // DebouncedEvent::NoticeWrite(val) => {
-                //     println!("{:?}", val);
-                //     let path = val.to_str().unwrap();
-                //
-                //     if valid_ED_logs_files(path, ED_FILES)
-                //         || valid_ED_logs_files(path, JOURNAL_LOG)
-                //     {
-                //         let content = read_journal_log(path);
-                //         let last_value = content.get(0).unwrap().clone();
-                //         let ed_log_event: EliteDangerousLogEvent =
-                //             serde_json::from_str(&last_value).unwrap();
-                //         info!(last_value, "sending value ====>");
-                //         app.emit_all("CargoEvent", last_value);
-                //         // if ed_log_event.event == "Cargo" {
-                //         //     let cargo: CargoEvent = serde_json::from_str(&last_value).unwrap();
-                //         //     println!("{:?}", cargo);
-                //
-                //         // }
-                //     }
-                // }
-                // DebouncedEvent::Error(error, _) => println!("{:?}", error),
-                // _ => {}
-                // }
+                    }
+                },
             }),
             Err(e) => println!("watch error: {:?}", e),
         }
