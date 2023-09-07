@@ -3,48 +3,19 @@
     windows_subsystem = "windows"
 )]
 
+use celest::{CargoEvent, EliteDangerousLogEvent};
 use notify::{RecursiveMode, Watcher};
 use notify_debouncer_full::{new_debouncer, DebouncedEvent};
 use regex::Regex;
 use rev_buf_reader::RevBufReader;
-use serde::Deserialize;
-use serde_derive::Serialize;
 use std::{fs::File, io::BufRead, path::Path, sync::mpsc, time::Duration};
 use tauri::Manager;
+
+mod celest;
 
 #[tauri::command]
 fn get_is_configured() -> bool {
     true
-}
-
-#[derive(Debug, Deserialize)]
-struct EliteDangerousLogEvent {
-    timestamp: String,
-    event: String,
-}
-
-#[derive(Debug, Deserialize, Serialize, Clone)]
-struct CargoEvent {
-    timestamp: String,
-    event: String,
-    #[serde(rename = "Vessel")]
-    vessel: String,
-    #[serde(rename = "Count")]
-    count: u32,
-    #[serde(rename = "Inventory")]
-    inventory: Option<Vec<CargoInventory>>,
-}
-
-#[derive(Debug, Deserialize, Serialize, Clone)]
-struct CargoInventory {
-    #[serde(rename = "Name")]
-    name: String,
-    #[serde(rename = "Name_Localised")]
-    name_localised: String,
-    #[serde(rename = "Count")]
-    count: u32,
-    #[serde(rename = "Stolen")]
-    stolen: u32,
 }
 
 fn main() {
