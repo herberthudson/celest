@@ -109,6 +109,24 @@ pub struct Reputation {
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct EngineersProgrees {
+    timestamp: TimeStamp,
+    event: String,
+    #[serde(rename = "Engineer")]
+    engineer: Vec<Engineer>,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct Engineer {
+    #[serde(rename = "Engineer")]
+    engineer: String,
+    #[serde(rename = "EngineerID")]
+    engineer_id: u64,
+    #[serde(rename = "Progress")]
+    progress: String,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct CargoEvent {
     timestamp: TimeStamp, // ISO 8601
     event: String,        // Cargo
