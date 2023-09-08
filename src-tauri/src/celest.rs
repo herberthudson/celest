@@ -3,16 +3,17 @@ use serde::{Deserialize, Serialize};
 pub const JOURNAL_LOG: &str = r"Journal(Alpha|Beta)?\.[0-9]{2,4}(-)?[0-9]{2}(-)?[0-9]{2}(T)?[0-9]{2}[0-9]{2}[0-9]{2}\.[0-9]{2}\.log$";
 pub const ED_FILES: &str =
     r"(Cargo|Market|ModulesInfo|NavRoute|Outfitting|ShipLoker|Shipyard|Status)\.json$";
+type TimeStamp = String; // TODO: change for date and time ISO 8601
 
 #[derive(Debug, Deserialize)]
 pub struct EliteDangerousLogEvent {
-    timestamp: String, // ISO 8601
+    timestamp: TimeStamp, // ISO 8601
     pub event: String,
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct FileHeader {
-    timestamp: String,
+    timestamp: TimeStamp,
     event: String,
     part: u16,
     language: String,
@@ -24,8 +25,8 @@ pub struct FileHeader {
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct CargoEvent {
-    timestamp: String, // ISO 8601
-    event: String,     // Cargo
+    timestamp: TimeStamp, // ISO 8601
+    event: String,        // Cargo
     #[serde(rename = "Vessel")]
     vessel: String, // Ship, SRV
     #[serde(rename = "Count")]
@@ -50,7 +51,7 @@ pub struct CargoInventory {
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct ClearSavedGame {
-    timestamp: String,
+    timestamp: TimeStamp,
     event: String, // ClearSavedGame
     #[serde(rename = "Name")]
     name: String, // Commander name
@@ -60,7 +61,7 @@ pub struct ClearSavedGame {
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct NewCommander {
-    timestamp: String,
+    timestamp: TimeStamp,
     event: String, // NewCommander
     #[serde(rename = "Name")]
     name: String,
