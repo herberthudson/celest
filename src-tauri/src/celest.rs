@@ -6,16 +6,16 @@ pub const ED_FILES: &str =
 
 #[derive(Debug, Deserialize)]
 pub struct EliteDangerousLogEvent {
-    timestamp: String,
+    timestamp: String, // ISO 8601
     pub event: String,
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct CargoEvent {
-    timestamp: String,
-    event: String,
+    timestamp: String, // ISO 8601
+    event: String,     // Cargo
     #[serde(rename = "Vessel")]
-    vessel: String,
+    vessel: String, // Ship, SRV
     #[serde(rename = "Count")]
     count: u32,
     #[serde(rename = "Inventory")]
