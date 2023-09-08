@@ -3,7 +3,7 @@
     windows_subsystem = "windows"
 )]
 
-use celest::{CargoEvent, EliteDangerousLogEvent};
+use celest::{CargoEvent, EliteDangerousLogEvent, ED_FILES, JOURNAL_LOG};
 use notify::{RecursiveMode, Watcher};
 use notify_debouncer_full::{new_debouncer, DebouncedEvent};
 use regex::Regex;
@@ -37,10 +37,6 @@ fn main() {
 fn check_if_config_file_exist() -> bool {
     Path::new("config.toml").exists()
 }
-
-const JOURNAL_LOG: &str = r"Journal(Alpha|Beta)?\.[0-9]{2,4}(-)?[0-9]{2}(-)?[0-9]{2}(T)?[0-9]{2}[0-9]{2}[0-9]{2}\.[0-9]{2}\.log$";
-const ED_FILES: &str =
-    r"(Cargo|Market|ModulesInfo|NavRoute|Outfitting|ShipLoker|Shipyard|Status)\.json$";
 
 fn valid_ed_logs_files(path: &str, partner: &str) -> bool {
     let regex_logs_files: Regex = Regex::new(partner).unwrap();
