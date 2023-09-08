@@ -24,6 +24,16 @@ pub struct FileHeader {
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct Commander {
+    timestamp: TimeStamp,
+    event: String,
+    #[serde(rename = "Name")]
+    name: String,
+    #[serde(rename = "FID")]
+    fid: String,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct CargoEvent {
     timestamp: TimeStamp, // ISO 8601
     event: String,        // Cargo
