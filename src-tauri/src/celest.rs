@@ -39,7 +39,17 @@ pub struct CargoInventory {
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct ClearSavedGame {
     timestamp: String,
-    event: String,
+    event: String, // ClearSavedGame
     #[serde(rename = "Name")]
     name: String, // Commander name
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct NewCommander {
+    timestamp: String,
+    event: String, // NewCommander
+    #[serde(rename = "Name")]
+    name: String,
+    #[serde(rename = "Package")]
+    package: String, // Selected starter package
 }
