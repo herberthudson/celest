@@ -42,6 +42,8 @@ pub struct ClearSavedGame {
     event: String, // ClearSavedGame
     #[serde(rename = "Name")]
     name: String, // Commander name
+    #[serde(rename = "FID")]
+    fid: String, // Player id
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
