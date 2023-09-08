@@ -35,3 +35,11 @@ pub struct CargoInventory {
     #[serde(rename = "Stolen")]
     stolen: u32,
 }
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct ClearSavedGame {
+    timestamp: String,
+    event: String,
+    #[serde(rename = "Name")]
+    name: String, // Commander name
+}
