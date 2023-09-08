@@ -171,6 +171,16 @@ pub struct LoadGame {
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct SquadronStartup {
+    timestamp: TimeStamp,
+    event: String,
+    #[serde(rename = "SquadronName")]
+    squadron_name: String,
+    #[serde(rename = "CurrentRank")]
+    current_rank: u8,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct CargoEvent {
     timestamp: TimeStamp, // ISO 8601
     event: String,        // Cargo
