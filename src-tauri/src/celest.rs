@@ -34,6 +34,26 @@ pub struct Commander {
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct Materials {
+    timestamp: TimeStamp,
+    event: String,
+    #[serde(rename = "Raw")]
+    raw: Vec<MaterialsQuantity>,
+    #[serde(rename = "Manufactured")]
+    manufactured: Vec<MaterialsQuantity>,
+    #[serde(rename = "Encoded")]
+    encoded: Vec<MaterialsQuantity>,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct MaterialsQuantity {
+    #[serde(rename = "Name")]
+    name: String,
+    #[serde(rename = "Count")]
+    count: u16,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct CargoEvent {
     timestamp: TimeStamp, // ISO 8601
     event: String,        // Cargo
