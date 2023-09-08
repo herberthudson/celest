@@ -97,6 +97,18 @@ pub struct Progress {
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct Reputation {
+    timestamp: TimeStamp,
+    event: String,
+    #[serde(rename = "Empire")]
+    empire: f32,
+    #[serde(rename = "Federation")]
+    federation: f32,
+    #[serde(rename = "Alliance")]
+    alliance: f32,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct CargoEvent {
     timestamp: TimeStamp, // ISO 8601
     event: String,        // Cargo
