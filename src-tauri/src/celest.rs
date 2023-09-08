@@ -11,6 +11,18 @@ pub struct EliteDangerousLogEvent {
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct FileHeader {
+    timestamp: String,
+    event: String,
+    part: u16,
+    language: String,
+    #[serde(rename = "Odyssey")]
+    odyssey: bool,
+    gameversion: String,
+    build: String,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct CargoEvent {
     timestamp: String, // ISO 8601
     event: String,     // Cargo
