@@ -8,25 +8,35 @@ use notify::{RecursiveMode, Watcher};
 use notify_debouncer_full::{new_debouncer, DebouncedEvent};
 use regex::Regex;
 use rev_buf_reader::RevBufReader;
+use serde_derive::{Deserialize, Serialize};
 use std::{fs::File, io::BufRead, path::Path, sync::mpsc, time::Duration};
 use tauri::Manager;
-
 mod celest;
 
 #[tauri::command]
-fn get_is_configured() -> bool {
-    true
+fn is_configured(appHandle: tauri::AppHandle) -> bool {
+    match config_exist(appHandle) {
+        Ok(_) => true,
+        Err(_) => false,
+    }
 }
 
 fn main() {
     tracing_subscriber::fmt::init();
 
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![get_is_configured])
+        .invoke_handler(tauri::generate_handler![is_configured])
         .setup(|app| {
             let app_handle = app.handle();
-
-            tauri::async_runtime::spawn(async move { connect_to_logs(&app_handle) });
+            match config_exist(app_handle.clone()) {
+                Ok(config) => {
+                    println!("Config {:?}", config);
+                    tauri::async_runtime::spawn(async move { connect_to_logs(&app_handle) });
+                }
+                Err(_) => {
+                    println!("Config not found");
+                }
+            }
 
             Ok(())
         })
@@ -34,8 +44,38 @@ fn main() {
         .expect("error while running tauri application");
 }
 
-fn check_if_config_file_exist() -> bool {
-    Path::new("config.toml").exists()
+#[derive(Debug, Deserialize, Serialize, Clone)]
+struct ConfigApp {
+    ed_log_dir: String,
+}
+
+fn config_exist(app_handle: tauri::AppHandle) -> Result<ConfigApp, bool> {
+    let path = app_handle.path_resolver().app_config_dir();
+    match path {
+        Some(mut path) => {
+            path.push("config.json");
+            println!("{:?}", path);
+            match path.exists() {
+                true => match load_config(&path.to_str().unwrap()) {
+                    Ok(config) => Ok(config),
+                    Err(e) => {
+                        println!("Error on load config: {:?}", e);
+                        Err(false)
+                    }
+                },
+                false => Err(false),
+            }
+        }
+        None => Err(false),
+    }
+}
+
+fn load_config(path: &str) -> Result<ConfigApp, serde_json::Error> {
+    let file = File::open(path).expect("no such file");
+    match serde_json::from_reader(file) {
+        Ok(config) => Ok(config),
+        Err(e) => Err(e),
+    }
 }
 
 fn valid_ed_logs_files(path: &str, partner: &str) -> bool {
@@ -60,7 +100,7 @@ enum EDEvents {
 }
 
 fn connect_to_logs(app_handle: &tauri::AppHandle) {
-    let path = "/home/herbert/.local/share/Steam/steamapps/compatdata/359320/pfx/drive_c/users/steamuser/Saved Games/Frontier Developments/Elite Dangerous";
+    let path = "/Users/herberthudson/Downloads/Journal.2022-11-16T141331.01.log";
     let (tx, rx) = mpsc::channel();
     let mut debouncer = new_debouncer(Duration::from_secs(1), None, tx).unwrap();
 
@@ -101,7 +141,7 @@ fn process_log_event(event: EliteDangerousLogEvent, value: &str, app_handle: &ta
             app_handle.emit_all("CargoEvent", cargo.clone());
         }
         _ => {
-            println!("{:?}", event);
+            println!("Event not found: {:?}", event);
         }
     }
 }
