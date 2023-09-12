@@ -2,7 +2,7 @@ use super::elite_dangerous::TimeStamp;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct Materials {
+pub struct MaterialsEvent {
     timestamp: TimeStamp,
     event: String,
     #[serde(rename = "Raw")]
@@ -14,7 +14,7 @@ pub struct Materials {
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct MaterialsQuantity {
+struct MaterialsQuantity {
     #[serde(rename = "Name")]
     name: String,
     #[serde(rename = "Count")]

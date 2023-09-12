@@ -2,7 +2,7 @@ use super::elite_dangerous::TimeStamp;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct ClearSavedGame {
+pub struct ClearSavedGameEvent {
     timestamp: TimeStamp,
     event: String, // ClearSavedGame
     #[serde(rename = "Name")]

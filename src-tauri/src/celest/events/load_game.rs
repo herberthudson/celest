@@ -2,7 +2,7 @@ use super::elite_dangerous::TimeStamp;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct LoadGame {
+pub struct LoadGameEvent {
     timestamp: TimeStamp,
     event: String,
     #[serde(rename = "FID")]

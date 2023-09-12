@@ -2,7 +2,7 @@ use super::elite_dangerous::TimeStamp;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct EngineersProgrees {
+pub struct EngineersProgressEvent {
     timestamp: TimeStamp,
     event: String,
     #[serde(rename = "Engineer")]
@@ -10,7 +10,7 @@ pub struct EngineersProgrees {
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct Engineer {
+struct Engineer {
     #[serde(rename = "Engineer")]
     engineer: String,
     #[serde(rename = "EngineerID")]
