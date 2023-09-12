@@ -4,24 +4,19 @@
 )]
 
 mod celest;
+
+use celest::commands::config::{config_exist, is_configured};
 use celest::events::cargo::CargoEvent;
 use celest::events::elite_dangerous::EliteDangerousLogEvent;
 use celest::logs::utils::{ED_FILES, JOURNAL_LOG};
+
 use notify::{RecursiveMode, Watcher};
 use notify_debouncer_full::{new_debouncer, DebouncedEvent};
+
 use regex::Regex;
 use rev_buf_reader::RevBufReader;
-use serde_derive::{Deserialize, Serialize};
 use std::{fs::File, io::BufRead, path::Path, sync::mpsc, time::Duration};
 use tauri::Manager;
-
-#[tauri::command]
-fn is_configured(appHandle: tauri::AppHandle) -> bool {
-    match config_exist(appHandle) {
-        Ok(_) => true,
-        Err(_) => false,
-    }
-}
 
 fn main() {
     tracing_subscriber::fmt::init();
@@ -44,40 +39,6 @@ fn main() {
         })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
-}
-
-#[derive(Debug, Deserialize, Serialize, Clone)]
-struct ConfigApp {
-    ed_log_dir: String,
-}
-
-fn config_exist(app_handle: tauri::AppHandle) -> Result<ConfigApp, bool> {
-    let path = app_handle.path_resolver().app_config_dir();
-    match path {
-        Some(mut path) => {
-            path.push("config.json");
-            println!("{:?}", path);
-            match path.exists() {
-                true => match load_config(&path.to_str().unwrap()) {
-                    Ok(config) => Ok(config),
-                    Err(e) => {
-                        println!("Error on load config: {:?}", e);
-                        Err(false)
-                    }
-                },
-                false => Err(false),
-            }
-        }
-        None => Err(false),
-    }
-}
-
-fn load_config(path: &str) -> Result<ConfigApp, serde_json::Error> {
-    let file = File::open(path).expect("no such file");
-    match serde_json::from_reader(file) {
-        Ok(config) => Ok(config),
-        Err(e) => Err(e),
-    }
 }
 
 fn valid_ed_logs_files(path: &str, partner: &str) -> bool {
