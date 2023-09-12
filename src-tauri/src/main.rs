@@ -3,7 +3,10 @@
     windows_subsystem = "windows"
 )]
 
-use celest::{CargoEvent, EliteDangerousLogEvent, ED_FILES, JOURNAL_LOG};
+mod celest;
+use celest::events::cargo::CargoEvent;
+use celest::events::elite_dangerous::EliteDangerousLogEvent;
+use celest::logs::utils::{ED_FILES, JOURNAL_LOG};
 use notify::{RecursiveMode, Watcher};
 use notify_debouncer_full::{new_debouncer, DebouncedEvent};
 use regex::Regex;
@@ -11,7 +14,6 @@ use rev_buf_reader::RevBufReader;
 use serde_derive::{Deserialize, Serialize};
 use std::{fs::File, io::BufRead, path::Path, sync::mpsc, time::Duration};
 use tauri::Manager;
-mod celest;
 
 #[tauri::command]
 fn is_configured(appHandle: tauri::AppHandle) -> bool {
