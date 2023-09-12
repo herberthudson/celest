@@ -2,7 +2,7 @@ use super::elite_dangerous::TimeStamp;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct ReceiveText {
+pub struct ReceiveTextEvent {
     timestamp: TimeStamp,
     event: String,
     #[serde(rename = "From")]

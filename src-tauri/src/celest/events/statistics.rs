@@ -2,7 +2,7 @@ use super::elite_dangerous::TimeStamp;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct Statistics {
+pub struct StatisticsEvent {
     timestamp: TimeStamp,
     event: String,
     #[serde(rename = "Bank_Account")]
@@ -37,7 +37,7 @@ pub struct Statistics {
 
 // TODO: valid fields with size of u64 is have the right type, or could be u16 or u8
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct BankAccount {
+struct BankAccount {
     #[serde(rename = "Current_Wealth")]
     current_wealth: u64,
     #[serde(rename = "Spent_On_Ships")]
@@ -74,7 +74,7 @@ pub struct BankAccount {
 
 // TODO: check size of type integer is the correct size
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct Combat {
+struct Combat {
     #[serde(rename = "Bounties_Claimed")]
     bounties_claimed: u16,
     #[serde(rename = "Bounty_Hunting_Profit")]
@@ -133,7 +133,7 @@ pub struct Combat {
 
 // TODO: check size of type integer is the correct size
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct Crime {
+struct Crime {
     #[serde(rename = "Notoriety")]
     notoriety: u8,
     #[serde(rename = "Fines")]
@@ -184,7 +184,7 @@ pub struct Crime {
 
 // TODO: check size of type integer is the correct size
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct Smuggling {
+struct Smuggling {
     #[serde(rename = "Black_Markets_Traded_With")]
     black_markets_traded_with: u64,
     #[serde(rename = "Black_Markets_Profits")]
@@ -199,7 +199,7 @@ pub struct Smuggling {
 
 // TODO: check size of type integer is the correct size
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct Trading {
+struct Trading {
     #[serde(rename = "Markets_Traded_With")]
     markets_traded_with: u64,
     #[serde(rename = "Market_Profits")]
@@ -220,7 +220,7 @@ pub struct Trading {
 
 // TODO: check size of type integer is the correct size
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct Mining {
+struct Mining {
     #[serde(rename = "Mining_Profits")]
     mining_profits: u64,
     #[serde(rename = "Quantity_Mined")]
@@ -231,7 +231,7 @@ pub struct Mining {
 
 // TODO: check size of type integer is the correct size
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct Exploration {
+struct Exploration {
     #[serde(rename = "Systems_Visited")]
     systems_visited: u64,
     #[serde(rename = "Exploration_Profits")]
@@ -270,7 +270,7 @@ pub struct Exploration {
 
 // TODO: check size of type integer is the correct size
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct Passenger {
+struct Passenger {
     #[serde(rename = "Passengers_Missions_Accepted")]
     passengers_missions_accepted: u64,
     #[serde(rename = "Passengers_Missions_Disgruntled")]
@@ -288,7 +288,7 @@ pub struct Passenger {
 // TODO: check size of type integer is the correct size
 #[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(rename = "Search_And_Rescue")]
-pub struct SearchAndRescue {
+struct SearchAndRescue {
     #[serde(rename = "SearchRescue_Traded")]
     searchrescue_traded: u64,
     #[serde(rename = "SearchRescue_Profit")]
@@ -315,7 +315,7 @@ pub struct SearchAndRescue {
 
 // TODO: check size of type integer is the correct size
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct Crafting {
+struct Crafting {
     #[serde(rename = "Count_Of_Crafted_Items")]
     count_of_crafted_items: u64,
     #[serde(rename = "Count_Of_Used_Engineers")]
@@ -352,7 +352,7 @@ pub struct Crafting {
 
 // TODO: check size of type integer is the correct size
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct Crew {
+struct Crew {
     #[serde(rename = "NpcCrew_TotalWages")]
     npccrew_totalwages: u64,
     #[serde(rename = "NpcCrew_Hired")]
@@ -365,7 +365,7 @@ pub struct Crew {
 
 // TODO: check size of type integer is the correct size
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct Multicrew {
+struct Multicrew {
     #[serde(rename = "Multicrew_Time_Total")]
     multicrew_time_total: u64,
     #[serde(rename = "Multicrew_Gunner_Time_Total")]
@@ -381,7 +381,7 @@ pub struct Multicrew {
 // TODO: check size of type integer is the correct size
 #[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(rename = "Material_Trader_Stats")]
-pub struct MaterialTraderStats {
+struct MaterialTraderStats {
     #[serde(rename = "Trades_Completed")]
     trades_completed: u64,
     #[serde(rename = "Materials_Traded")]
@@ -408,7 +408,7 @@ pub struct MaterialTraderStats {
 
 // TODO: check size of type integer is the correct size
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct Exobiology {
+struct Exobiology {
     #[serde(rename = "Organic_Genus_Encountered")]
     organic_genus_encountered: u64,
     #[serde(rename = "Organic_Species_Encountered")]

@@ -2,7 +2,7 @@ use super::elite_dangerous::TimeStamp;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct FileHeader {
+pub struct FileHeaderEvent {
     timestamp: TimeStamp,
     event: String,
     part: u16,

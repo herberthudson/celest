@@ -22,6 +22,7 @@ fn valid_ed_logs_files(path: &str, partner: &str) -> bool {
 }
 
 fn read_journal_log(path: &str) -> Vec<String> {
+    // TODO: valid what is the best limit for how many lines should be read
     let limit = 10;
     let file = File::open(path).expect("no such file");
     let buf = RevBufReader::new(file);
@@ -48,6 +49,7 @@ pub fn connect_to_logs(app_handle: &tauri::AppHandle) {
             Ok(events) => events.iter().for_each(|event| match event {
                 DebouncedEvent { event, time } => match event {
                     DataChange => {
+                        //TODO: Valid and process all paths or just the last
                         let log_path = event.paths[0].to_str().unwrap();
                         if valid_ed_logs_files(log_path, ED_FILES)
                             || valid_ed_logs_files(log_path, JOURNAL_LOG)
